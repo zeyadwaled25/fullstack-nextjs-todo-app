@@ -12,10 +12,18 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { getTodosListAction } from "@/actions/todo.actions";
 
-export default function Home() {
+export default async function Home() {
+  const todos = await getTodosListAction()
+
   return (
     <div className="font-sans min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      <div className="flex flex-col gap-4">
+        {todos.map((todo) => (
+          <div key={todo.id}>{todo.title}</div>
+        ))}
+      </div>
       <Dialog>
         <form>
           <DialogTrigger asChild>
