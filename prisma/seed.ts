@@ -1,13 +1,15 @@
 import { PrismaClient } from '@prisma/client'
+import { faker } from '@faker-js/faker'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  await prisma.user.create({
-    data: {
-      email: 'prisma@prisma.io',
-    },
-  })
+  await prisma.todo.createMany({
+    data: Array.from({ length: 10 }, () => ({
+      title: faker.lorem.text(),
+      body: faker.lorem.paragraph(),
+    }))
+  })  
 }
 
 main()
