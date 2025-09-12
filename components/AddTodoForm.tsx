@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import { todoFormSchema, TodoFormValues, defaultValues } from "@/schema";
+import { createTodoAction } from "@/actions/todo.actions";
 
 const AddTodoFrom = () => {
   const form = useForm<TodoFormValues>({
@@ -36,6 +37,9 @@ const AddTodoFrom = () => {
 
   const onSubmit = (data: TodoFormValues) => {
     console.log(data)
+
+    const {title, body} = data
+    createTodoAction({title, body})
   }
 
   return (
