@@ -17,9 +17,11 @@ export const todoFormSchema = z.object({
       message: "Body must not be longer than 80 characters.",
     })
     .optional(),
+  completed: z.boolean(),
 })
 
 export const defaultValues: Partial<TodoFormValues> = {
-  title: "Title",
-  body: "Body",
+  title: "",
+  body: "",
+  completed: false
 }
