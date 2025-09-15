@@ -7,7 +7,6 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,7 +14,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,11 +22,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { todoFormSchema, TodoFormValues, defaultValues } from "@/schema";
 import { createTodoAction } from "@/actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
-import { Label } from "./ui/label";
 
 const AddTodoFrom = () => {
   const form = useForm<TodoFormValues>({
@@ -38,8 +35,6 @@ const AddTodoFrom = () => {
   })
 
   const onSubmit = (data: TodoFormValues) => {
-    console.log(data)
-
     const {title, body, completed} = data
     createTodoAction({title, body, completed})
   }
@@ -107,7 +102,9 @@ const AddTodoFrom = () => {
                   )}
                 />
 
-                <Button type="submit">Save changes</Button>
+                <DialogClose asChild>
+                  <Button type="submit">Save changes</Button>
+                </DialogClose>
               </form>
             </Form>
           </div>
