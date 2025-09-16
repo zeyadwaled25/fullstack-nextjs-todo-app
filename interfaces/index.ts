@@ -3,6 +3,6 @@ export interface ITodo {
   title: string;
   body: string | null;
   completed: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
