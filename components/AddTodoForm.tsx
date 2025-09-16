@@ -14,6 +14,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,32 +27,35 @@ import { useForm } from "react-hook-form"
 import { todoFormSchema, TodoFormValues, defaultValues } from "@/schema";
 import { createTodoAction } from "@/actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
+import { useState } from "react";
+import Spinner from "./Spinner";
 
 const AddTodoFrom = () => {
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const form = useForm<TodoFormValues>({
     resolver: zodResolver(todoFormSchema),
     defaultValues,
     mode: "onChange",
   })
 
-  const onSubmit = (data: TodoFormValues) => {
-    const {title, body, completed} = data
-    createTodoAction({title, body, completed})
+  const onSubmit = async ({title, body, completed}: TodoFormValues) => {
+    setLoading(true)
+    await createTodoAction({title, body, completed})
+    setLoading(false)
+    setOpen(false)
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <form>
         <DialogTrigger asChild>
           <Button><Plus size={16} />Add Todo</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
-            </DialogDescription>
+            <DialogTitle>Add a new Todo</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <Form {...form}>
@@ -63,7 +67,7 @@ const AddTodoFrom = () => {
                     <FormItem>
                       <FormLabel>Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Add title of your todo." {...field} />
+                        <Input placeholder="Add title of your todo" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -78,11 +82,12 @@ const AddTodoFrom = () => {
                       <FormLabel>Body</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Tell us a little bit about your todo body..."
+                          placeholder="Tell us a little bit about your todo body"
                           className="resize-none"
                           {...field}
-                        />
+                          />
                       </FormControl>
+                      <FormDescription>You can write a short description about your next todo.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -93,18 +98,21 @@ const AddTodoFrom = () => {
                   name="completed"
                   render={({field}) => (
                     <FormItem>
-                      <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                      <FormLabel>Completed</FormLabel>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        <FormLabel>Completed</FormLabel>
+                      </div>
+                      <FormDescription>Your to-do item will be uncompleted by default unless you checked it.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <DialogClose asChild>
-                  <Button type="submit">Save changes</Button>
-                </DialogClose>
+                <Button type="submit" disabled={loading}>
+                  {loading ? <><Spinner /> Saving</> : "Save"}
+                </Button>
               </form>
             </Form>
           </div>

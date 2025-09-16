@@ -7,7 +7,11 @@ import { revalidatePath } from "next/cache";
 const prisma = new PrismaClient()
 
 export const getTodosListAction = async () => {
-  return await prisma.todo.findMany()
+  return await prisma.todo.findMany({
+    orderBy: {
+      updatedAt: "desc"
+    }
+  })
 }
 export const createTodoAction = async ({title, body, completed} : TodoFormValues) => {
   await prisma.todo.create({
