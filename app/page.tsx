@@ -3,6 +3,7 @@ import AddTodoFrom from "@/components/AddTodoForm";
 import TodosTable from "@/components/TodosTable";
 import { auth } from '@clerk/nextjs/server'
 
+export const dynamic = "force-dynamic";
 export default async function Home() {
   const { userId } = await auth()
   const todos = await getTodosListAction({userId})

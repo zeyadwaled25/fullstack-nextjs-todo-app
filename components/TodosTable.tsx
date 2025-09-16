@@ -25,7 +25,7 @@ export default function TodosTable({todos}: {todos: ITodo[]}) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {todos?.map((todo) => (
+        {todos.map((todo) => (
           <TableRow key={todo?.id}>
             <TableCell>{todo?.id}</TableCell>
             <TableCell>{todo?.title}</TableCell>

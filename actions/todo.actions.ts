@@ -6,22 +6,16 @@ import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient()
 
-export const getTodosListAction = async ({ userId }: { userId?: string | null }) => {
-  if (!userId) {
-    return [];
-  }
-  try {
-    const todos = await prisma.todo.findMany({
-      where: { user_id: userId },
-      orderBy: { createdAt: 'desc' },
-    });
-    return todos;
-  } catch (error) {
-    console.error('Failed to fetch todos:', error);
-    return [];
-  }
+export const getTodosListAction = async ({userId}: {userId: string | null}) => {
+  return await prisma.todo.findMany({
+    where: {
+      user_id: userId as string
+    },
+    orderBy: {
+      updatedAt: "desc"
+    }
+  })
 }
-
 export const createTodoAction = async ({title, body, completed, userId} : {title: string, body: string | undefined, completed: boolean, userId: string | null}) => {
   await prisma.todo.create({
     data: ({
