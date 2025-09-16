@@ -14,7 +14,7 @@ import TodoTableActions from "./TodoTableActions";
 
 export default function TodosTable({todos}: {todos: ITodo[]}) {
   return (
-    <Table>
+    <Table className="mt-2">
       <TableCaption>A list of todos.</TableCaption>
       <TableHeader>
         <TableRow>
