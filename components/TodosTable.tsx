@@ -15,7 +15,7 @@ import TodoTableActions from "./TodoTableActions";
 export default function TodosTable({todos}: {todos: ITodo[]}) {
   return (
     <Table className="mt-2">
-      <TableCaption>A list of todos.</TableCaption>
+      <TableCaption>A list of your todos.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Id</TableHead>
@@ -39,7 +39,7 @@ export default function TodosTable({todos}: {todos: ITodo[]}) {
       <TableFooter>
         <TableRow>
           <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">{todos.length}</TableCell>
+          <TableCell className={"text-right"}>{!todos.length ? "You Don't have any todos yet!" : todos.length}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>
