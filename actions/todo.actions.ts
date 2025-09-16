@@ -1,7 +1,6 @@
 'use server'
 
 import { ITodo } from "@/interfaces";
-import { TodoFormValues } from "@/schema";
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -14,12 +13,13 @@ export const getTodosListAction = async () => {
     }
   })
 }
-export const createTodoAction = async ({title, body, completed} : TodoFormValues) => {
+export const createTodoAction = async ({title, body, completed, userId} : {title: string, body: string | undefined, completed: boolean, userId: string | null}) => {
   await prisma.todo.create({
     data: ({
       title,
       body,
       completed,
+      user_id: userId as string,
     })
   })
 
