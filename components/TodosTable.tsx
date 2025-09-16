@@ -25,11 +25,11 @@ export default function TodosTable({todos}: {todos: ITodo[]}) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {todos.map((todo) => (
-          <TableRow key={todo.id}>
-            <TableCell>{todo.id}</TableCell>
-            <TableCell>{todo.title}</TableCell>
-            <TableCell>{todo.completed ? <Badge variant="default">Completed</Badge> : <Badge variant="secondary">Uncompleted</Badge>}</TableCell>
+        {todos?.map((todo) => (
+          <TableRow key={todo?.id}>
+            <TableCell>{todo?.id}</TableCell>
+            <TableCell>{todo?.title}</TableCell>
+            <TableCell>{todo?.completed ? <Badge variant="default">Completed</Badge> : <Badge variant="secondary">Uncompleted</Badge>}</TableCell>
             <TableCell className="flex items-center justify-end space-x-2">
               <TodoTableActions todo={todo} />
             </TableCell>
