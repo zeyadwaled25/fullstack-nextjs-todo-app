@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient()
 
-export const getTodosListAction = async ({userId}: {userId: string | null}) => {
+export const getTodosListAction = async ({ userId }: { userId: string | null }) => {
   return await prisma.todo.findMany({
     where: {
       user_id: userId as string
@@ -16,7 +16,7 @@ export const getTodosListAction = async ({userId}: {userId: string | null}) => {
     }
   })
 }
-export const createTodoAction = async ({title, body, completed, userId} : {title: string, body: string | undefined, completed: boolean, userId: string | null}) => {
+export const createTodoAction = async ({ title, body, completed, userId }: { title: string, body: string | undefined, completed: boolean, userId: string | null }) => {
   await prisma.todo.create({
     data: ({
       title,
@@ -28,7 +28,7 @@ export const createTodoAction = async ({title, body, completed, userId} : {title
 
   revalidatePath("/")
 }
-export const deleteTodoAction = async ({id}: {id: string}) => {
+export const deleteTodoAction = async ({ id }: { id: string }) => {
   await prisma.todo.delete({
     where: {
       id
@@ -46,6 +46,19 @@ export const updateTodoAction = async (todo: ITodo) => {
       title: todo.title,
       body: todo.body,
       completed: todo.completed,
+    }
+  })
+
+  revalidatePath("/")
+}
+
+export const toggleTodoAction = async ({ id, completed }: { id: string, completed: boolean }) => {
+  await prisma.todo.update({
+    where: {
+      id,
+    },
+    data: {
+      completed: !completed,
     }
   })
 

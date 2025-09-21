@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Table,
   TableBody,
@@ -11,8 +13,23 @@ import {
 import { ITodo } from "@/interfaces"
 import { Badge } from "./ui/badge"
 import TodoTableActions from "./TodoTableActions";
+import { toggleTodoAction } from "@/actions/todo.actions";
+import { useState } from "react";
 
-export default function TodosTable({todos}: {todos: ITodo[]}) {
+export default function TodosTable({ todos }: { todos: ITodo[] }) {
+  const [loadingTodos, setLoadingTodos] = useState<string[]>([]);
+
+  const handleToggleTodo = async (todo: ITodo) => {
+    setLoadingTodos(prev => [...prev, todo.id]);
+    try {
+      await toggleTodoAction({ id: todo.id, completed: todo.completed });
+    } catch (error) {
+      console.error('Error toggling todo:', error);
+    } finally {
+      setLoadingTodos(prev => prev.filter(id => id !== todo.id));
+    }
+  };
+
   return (
     <Table className="mt-2">
       <TableCaption>A list of your todos.</TableCaption>
@@ -26,11 +43,25 @@ export default function TodosTable({todos}: {todos: ITodo[]}) {
       </TableHeader>
       <TableBody>
         {todos.map((todo) => (
-          <TableRow key={todo?.id}>
+          <TableRow
+            key={todo?.id}
+            className="cursor-pointer hover:bg-muted/50 transition-colors"
+            onClick={() => handleToggleTodo(todo)}
+          >
             <TableCell>{todo?.id}</TableCell>
-            <TableCell>{todo?.title}</TableCell>
-            <TableCell>{todo?.completed ? <Badge variant="default">Completed</Badge> : <Badge variant="secondary">Uncompleted</Badge>}</TableCell>
-            <TableCell className="flex items-center justify-end space-x-2">
+            <TableCell className="font-medium">{todo?.title}</TableCell>
+            <TableCell>
+              {loadingTodos.includes(todo.id) ? (
+                <Badge variant="outline">Updating...</Badge>
+              ) : (
+                todo?.completed ? (
+                  <Badge variant="default">Completed</Badge>
+                ) : (
+                  <Badge variant="secondary">Uncompleted</Badge>
+                )
+              )}
+            </TableCell>
+            <TableCell className="flex items-center justify-end space-x-2" onClick={(e) => e.stopPropagation()}>
               <TodoTableActions todo={todo} />
             </TableCell>
           </TableRow>
