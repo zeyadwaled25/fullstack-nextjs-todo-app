@@ -58,7 +58,7 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit this Todo</DialogTitle>
+            <DialogTitle>Edit this Task</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <Form {...form}>
@@ -68,9 +68,13 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel className="text-sm font-medium">Task Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Add title of your todo" {...field} />
+                        <Input
+                          placeholder="What needs to be done?"
+                          className="h-11"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -82,15 +86,17 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
                   name="body"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Body</FormLabel>
+                      <FormLabel className="text-sm font-medium">Description</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Tell us a little bit about your todo body"
-                          className="resize-none"
+                          placeholder="Add more details about this task..."
+                          className="resize-none h-24"
                           {...field}
-                          />
+                        />
                       </FormControl>
-                      <FormDescription>You can write a short description about your next todo.</FormDescription>
+                      <FormDescription className="text-xs">
+                        Optional: Add additional context or notes for this task
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -100,22 +106,42 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
                   control={form.control}
                   name="completed"
                   render={({field}) => (
-                    <FormItem>
+                    <FormItem className="mb-0">
                       <div className="flex items-center space-x-2">
                         <FormControl>
                           <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                         </FormControl>
                         <FormLabel>Completed</FormLabel>
                       </div>
-                      <FormDescription>Your to-do item will be uncompleted by default unless you checked it.</FormDescription>
+                      <FormDescription className="text-xs">
+                        Check this if the task is already finished
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <Button type="submit" disabled={loading}>
-                  {loading ? <><Spinner /> Saving</> : "Save"}
-                </Button>
+                <div className="flex items-center justify-end space-x-3 pt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setOpen(false)}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    {loading ? (
+                      <>
+                        <Spinner /> Saving...
+                      </>
+                      ) : "Save"}
+                  </Button>
+                </div>
               </form>
             </Form>
           </div>

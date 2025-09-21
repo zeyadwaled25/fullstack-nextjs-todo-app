@@ -50,21 +50,13 @@ const AddTodoFrom = ({ userId }: { userId: string | null }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200">
-          <Plus size={16} className="mr-2" />
+          <Plus size={16} />
           Add Todo
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader className="space-y-3">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <Plus className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <DialogTitle className="text-xl">Create New Task</DialogTitle>
-              <p className="text-sm text-muted-foreground">Add a new task to your todo list</p>
-            </div>
-          </div>
+          <DialogTitle>Create A New Task</DialogTitle>
         </DialogHeader>
 
         <div className="py-6">
@@ -113,30 +105,22 @@ const AddTodoFrom = ({ userId }: { userId: string | null }) => {
                 control={form.control}
                 name="completed"
                 render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
+                  <FormItem className="mb-0">
+                    <div className="flex items-center space-x-2">
                       <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                        />
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
-                      <div className="space-y-1">
-                        <FormLabel className="text-sm font-medium cursor-pointer">
-                          Mark as completed
-                        </FormLabel>
-                        <FormDescription className="text-xs">
-                          Check this if the task is already finished
-                        </FormDescription>
-                      </div>
+                      <FormLabel>Completed</FormLabel>
                     </div>
+                    <FormDescription className="text-xs">
+                      Check this if the task is already finished
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="flex justify-end space-x-3 pt-4">
+              <div className="flex items-center justify-end space-x-3 pt-6">
                 <Button
                   type="button"
                   variant="outline"
@@ -152,15 +136,9 @@ const AddTodoFrom = ({ userId }: { userId: string | null }) => {
                 >
                   {loading ? (
                     <>
-                      <Spinner />
-                      <span className="ml-2">Creating...</span>
+                      <Spinner /> Creating...
                     </>
-                  ) : (
-                    <>
-                      <Plus size={16} className="mr-2" />
-                      Create Task
-                    </>
-                  )}
+                  ) : "Create"}
                 </Button>
               </div>
             </form>

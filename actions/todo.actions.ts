@@ -12,7 +12,7 @@ export const getTodosListAction = async ({ userId }: { userId: string | null }) 
       user_id: userId as string
     },
     orderBy: {
-      updatedAt: "desc"
+      createdAt: "desc"
     }
   })
 }
