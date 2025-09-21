@@ -28,7 +28,7 @@ import { Checkbox } from "./ui/checkbox";
 import { useState } from "react";
 import Spinner from "./Spinner";
 
-const AddTodoFrom = ({userId} : {userId: string | null}) => {
+const AddTodoFrom = ({ userId }: { userId: string | null }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -38,10 +38,11 @@ const AddTodoFrom = ({userId} : {userId: string | null}) => {
     mode: "onChange",
   })
 
-  const onSubmit = async ({title, body, completed}: TodoFormValues) => {
+  const onSubmit = async ({ title, body, completed }: TodoFormValues) => {
     setLoading(true)
-    await createTodoAction({title, body, completed, userId})
+    await createTodoAction({ title, body, completed, userId })
     setLoading(false)
+    form.reset()
     setOpen(false)
   }
 
@@ -83,7 +84,7 @@ const AddTodoFrom = ({userId} : {userId: string | null}) => {
                           placeholder="Tell us a little bit about your todo body"
                           className="resize-none"
                           {...field}
-                          />
+                        />
                       </FormControl>
                       <FormDescription>You can write a short description about your next todo.</FormDescription>
                       <FormMessage />
@@ -94,7 +95,7 @@ const AddTodoFrom = ({userId} : {userId: string | null}) => {
                 <FormField
                   control={form.control}
                   name="completed"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <div className="flex items-center space-x-2">
                         <FormControl>
