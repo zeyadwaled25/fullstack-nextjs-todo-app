@@ -13,25 +13,47 @@ import {
 import { ITodo } from "@/interfaces"
 import TodoTableActions from "./TodoTableActions";
 import { toggleTodoAction } from "@/actions/todo.actions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle, Circle, Clock, Plus } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { useRouter } from "next/navigation";
 
 export default function TodosTable({ todos }: { todos: ITodo[] }) {
   const [loadingTodos, setLoadingTodos] = useState<string[]>([]);
+  const [localTodos, setLocalTodos] = useState<ITodo[]>(todos);
+  const router = useRouter();
+
+  useEffect(() => {
+    setLocalTodos(todos);
+  }, [todos]);
 
   const handleToggleTodo = async (todo: ITodo) => {
     setLoadingTodos(prev => [...prev, todo.id]);
+    setLocalTodos(prev =>
+      prev.map(t =>
+        t.id === todo.id
+          ? { ...t, completed: !t.completed }
+          : t
+      )
+    );
+
     try {
       await toggleTodoAction({ id: todo.id, completed: todo.completed });
+      router.refresh();
     } catch (error) {
       console.error('Error toggling todo:', error);
+      setLocalTodos(prev =>
+        prev.map(t =>
+          t.id === todo.id
+            ? { ...t, completed: todo.completed }
+            : t
+        )
+      );
     } finally {
       setLoadingTodos(prev => prev.filter(id => id !== todo.id));
     }
   };
 
-  // Empty state component
   const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
       <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
@@ -44,7 +66,7 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
     </div>
   );
 
-  if (todos.length === 0) {
+  if (localTodos.length === 0) {
     return <EmptyState />;
   }
 
@@ -63,7 +85,7 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {todos.map((todo) => (
+          {localTodos.map((todo) => (
             <TableRow
               key={todo?.id}
               className={`group cursor-pointer hover:bg-muted/50 transition-all duration-200 ${todo?.completed ? 'opacity-75' : ''
@@ -120,10 +142,10 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
         <TableFooter>
           <TableRow>
             <TableCell colSpan={5} className="text-left">
-              {!todos.length ? "You Don't have any todos yet!" : "Total"}
+              {!localTodos.length ? "You Don't have any todos yet!" : "Total"}
             </TableCell>
             <TableCell className="text-right">
-              {!todos.length ? "" : todos.length}
+              {!localTodos.length ? "" : localTodos.length}
             </TableCell>
           </TableRow>
         </TableFooter>

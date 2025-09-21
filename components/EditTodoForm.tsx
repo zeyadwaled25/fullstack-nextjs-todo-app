@@ -25,11 +25,11 @@ import { useForm } from "react-hook-form"
 import { todoFormSchema, TodoFormValues } from "@/schema";
 import { updateTodoAction } from "@/actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 import { ITodo } from "@/interfaces";
 
-const EditTodoFrom = ({todo} : {todo: ITodo}) => {
+const EditTodoFrom = ({ todo }: { todo: ITodo }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -43,9 +43,18 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
     mode: "onChange",
   })
 
+  // Update form values when todo changes
+  useEffect(() => {
+    form.reset({
+      title: todo.title,
+      body: todo.body as string,
+      completed: todo.completed,
+    })
+  }, [todo, form])
+
   const onSubmit = async (data: TodoFormValues) => {
     setLoading(true)
-    await updateTodoAction({id: todo.id, title: data.title, body: data.body as string, completed: data.completed})
+    await updateTodoAction({ id: todo.id, title: data.title, body: data.body as string, completed: data.completed })
     setLoading(false)
     setOpen(false)
   }
@@ -56,13 +65,13 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
         <DialogTrigger asChild>
           <Button size={"icon"}><Pen /></Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader className="space-y-3">
             <DialogTitle>Edit this Task</DialogTitle>
           </DialogHeader>
-          <div className="py-4">
+          <div className="py-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
                   name="title"
@@ -105,7 +114,7 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
                 <FormField
                   control={form.control}
                   name="completed"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem className="mb-0">
                       <div className="flex items-center space-x-2">
                         <FormControl>
@@ -139,7 +148,7 @@ const EditTodoFrom = ({todo} : {todo: ITodo}) => {
                       <>
                         <Spinner /> Saving...
                       </>
-                      ) : "Save"}
+                    ) : "Save"}
                   </Button>
                 </div>
               </form>
