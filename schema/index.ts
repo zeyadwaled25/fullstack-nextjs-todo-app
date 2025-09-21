@@ -5,8 +5,8 @@ export type TodoFormValues = z.infer<typeof todoFormSchema>
 export const todoFormSchema = z.object({
   title: z
     .string()
-    .min(5, {
-      message: "Title must be at least 5 characters.",
+    .min(1, {
+      message: "Title must be at least 1 character.",
     })
     .max(30, {
       message: "Title must not be longer than 30 characters.",
