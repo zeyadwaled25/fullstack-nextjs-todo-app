@@ -35,9 +35,10 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
       <TableCaption>A list of your todos.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Id</TableHead>
+          <TableHead>#</TableHead>
           <TableHead>Title</TableHead>
-          <TableHead>Completed</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Created</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -48,8 +49,10 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
             className="cursor-pointer hover:bg-muted/50 transition-colors"
             onClick={() => handleToggleTodo(todo)}
           >
-            <TableCell>{index + 1}</TableCell>
-            <TableCell className="font-medium">{todo?.title}</TableCell>
+            <TableCell className="font-mono text-sm">{index + 1}</TableCell>
+            <TableCell className="font-medium max-w-[200px] truncate" title={todo?.title}>
+              {todo?.title}
+            </TableCell>
             <TableCell>
               {loadingTodos.includes(todo.id) ? (
                 <Badge variant="outline">Updating...</Badge>
@@ -61,6 +64,9 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
                 )
               )}
             </TableCell>
+            <TableCell className="text-sm text-muted-foreground">
+              {todo?.createdAt ? new Date(todo.createdAt).toLocaleDateString() : 'N/A'}
+            </TableCell>
             <TableCell className="flex items-center justify-end space-x-2" onClick={(e) => e.stopPropagation()}>
               <TodoTableActions todo={todo} />
             </TableCell>
@@ -69,7 +75,7 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
+          <TableCell colSpan={5}>Total</TableCell>
           <TableCell className={"text-right"}>{!todos.length ? "You Don't have any todos yet!" : todos.length}</TableCell>
         </TableRow>
       </TableFooter>
