@@ -42,13 +42,13 @@ export default function TodosTable({ todos }: { todos: ITodo[] }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {todos.map((todo) => (
+        {todos.map((todo, index) => (
           <TableRow
             key={todo?.id}
             className="cursor-pointer hover:bg-muted/50 transition-colors"
             onClick={() => handleToggleTodo(todo)}
           >
-            <TableCell>{todo?.id}</TableCell>
+            <TableCell>{index + 1}</TableCell>
             <TableCell className="font-medium">{todo?.title}</TableCell>
             <TableCell>
               {loadingTodos.includes(todo.id) ? (
