@@ -1,10 +1,8 @@
 'use server'
 
 import { ITodo } from "@/interfaces";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-
-const prisma = new PrismaClient()
 
 export const getTodosListAction = async ({ userId }: { userId: string | null }) => {
   return await prisma.todo.findMany({
