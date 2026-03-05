@@ -5,9 +5,10 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export const getTodosListAction = async ({ userId }: { userId: string | null }) => {
+  if (!userId) return [];
   return await prisma.todo.findMany({
     where: {
-      user_id: userId as string
+      user_id: userId
     },
     orderBy: {
       createdAt: "desc"
