@@ -225,11 +225,3 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<div align="center">
-
-Made with ❤️ using [Next.js](https://nextjs.org/) &amp; [Clerk](https://clerk.com/)
-
-</div>
