@@ -2,10 +2,12 @@ import { getTodosListAction } from "@/actions/todo.actions";
 import AddTodoFrom from "@/components/AddTodoForm";
 import TodosTable from "@/components/TodosTable";
 import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 
 export const dynamic = "force-dynamic";
 export default async function Home() {
   const { userId } = await auth()
+  if (!userId) redirect('/sign-in')
   const todos = await getTodosListAction({userId})
 
   return (
